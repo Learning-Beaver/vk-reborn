@@ -1,0 +1,4 @@
+com.vkreborn.ime:xml/method = 0x7f030000
+com.vkreborn.ime:style/AppTheme = 0x7f020000
+com.vkreborn.ime:string/ime_subtype_label = 0x7f010001
+com.vkreborn.ime:string/app_name = 0x7f010000

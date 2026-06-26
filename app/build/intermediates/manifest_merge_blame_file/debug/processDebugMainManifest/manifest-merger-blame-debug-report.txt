@@ -1,0 +1,72 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.vkreborn.ime"
+4    android:versionCode="6"
+5    android:versionName="0.4.2-alpha" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="35" />
+10
+11    <uses-feature
+11-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:3:5-91
+12        android:name="android.software.input_methods"
+12-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:3:19-64
+13        android:required="true" />
+13-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:3:65-88
+14
+15    <application
+15-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:5:5-28:19
+16        android:allowBackup="false"
+16-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:8:9-36
+17        android:debuggable="true"
+18        android:extractNativeLibs="false"
+19        android:label="@string/app_name"
+19-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:6:9-41
+20        android:supportsRtl="true"
+20-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:9:9-35
+21        android:theme="@style/AppTheme" >
+21-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:7:9-40
+22        <activity
+22-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:10:9-17:20
+23            android:name="com.vkreborn.ime.settings.MainActivity"
+23-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:11:13-50
+24            android:exported="true" >
+24-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:12:13-36
+25            <intent-filter>
+25-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:13:13-16:29
+26                <action android:name="android.intent.action.MAIN" />
+26-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:14:17-69
+26-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:14:25-66
+27
+28                <category android:name="android.intent.category.LAUNCHER" />
+28-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:15:17-77
+28-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:15:27-74
+29            </intent-filter>
+30        </activity>
+31
+32        <service
+32-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:19:9-27:19
+33            android:name="com.vkreborn.ime.VkRebornImeService"
+33-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:20:13-47
+34            android:exported="true"
+34-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:22:13-36
+35            android:permission="android.permission.BIND_INPUT_METHOD" >
+35-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:21:13-70
+36            <intent-filter>
+36-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:23:13-25:29
+37                <action android:name="android.view.InputMethod" />
+37-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:24:17-67
+37-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:24:25-64
+38            </intent-filter>
+39
+40            <meta-data
+40-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:26:13-88
+41                android:name="android.view.im"
+41-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:26:24-54
+42                android:resource="@xml/method" />
+42-->C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\src\main\AndroidManifest.xml:26:55-85
+43        </service>
+44    </application>
+45
+46</manifest>

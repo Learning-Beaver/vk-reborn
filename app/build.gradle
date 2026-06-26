@@ -1,0 +1,28 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.vkreborn.ime'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.vkreborn.ime'
+        minSdk 23
+        targetSdk 35
+        versionCode 6
+        versionName '0.4.2-alpha'
+    }
+
+    // Use Android's standard Java 8 bytecode target for max compatibility.
+    // Do NOT force a Gradle JVM toolchain here; Android Studio's embedded JDK will be used.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}

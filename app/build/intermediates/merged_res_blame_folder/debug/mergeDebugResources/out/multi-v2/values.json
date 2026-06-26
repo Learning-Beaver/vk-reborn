@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.vkreborn.ime.app-mergeDebugResources-2:/values/values.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Jeahyunkim\\Downloads\\vk-reborn-skeleton-v0.5\\vk-reborn-v0.6\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1,2",
+                        "startColumns": "4,4",
+                        "startOffsets": "16,63",
+                        "endColumns": "46,62",
+                        "endOffsets": "58,121"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,102",
+                        "endColumns": "46,62",
+                        "endOffsets": "97,160"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Jeahyunkim\\Downloads\\vk-reborn-skeleton-v0.5\\vk-reborn-v0.6\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "85",
+                        "endOffsets": "97"
+                    },
+                    "to": {
+                        "startLines": "4",
+                        "startColumns": "4",
+                        "startOffsets": "165",
+                        "endColumns": "84",
+                        "endOffsets": "245"
+                    }
+                }
+            ]
+        }
+    ]
+}

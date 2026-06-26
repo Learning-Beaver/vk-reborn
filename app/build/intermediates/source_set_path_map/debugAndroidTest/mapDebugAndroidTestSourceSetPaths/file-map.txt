@@ -1,0 +1,4 @@
+com.vkreborn.ime.test.app-androidTest-0 C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\build\generated\res\resValues\androidTest\debug
+com.vkreborn.ime.test.app-mergeDebugAndroidTestResources-1 C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.vkreborn.ime.test.app-mergeDebugAndroidTestResources-2 C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.vkreborn.ime.test.app-debugAndroidTest-3 C:\Users\Jeahyunkim\Downloads\vk-reborn-skeleton-v0.5\vk-reborn-v0.6\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources
