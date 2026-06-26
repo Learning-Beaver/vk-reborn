@@ -22,3 +22,11 @@
 - 복합모음/삭제/DEL 롱프레스 반복 삭제 반영
 - 9번 키 3회 입력 `ㅢ` 지원
 - 겹받침 1차 조합 지원
+
+
+## v0.7
+
+- Fix: same-key consonant after final consonant should start next syllable.
+- Test: `안녕` input path fixed.
+- Test: `응이` input path fixed.
+- Add: `canReplaceLastJamoOnRepeat()` composer guard.

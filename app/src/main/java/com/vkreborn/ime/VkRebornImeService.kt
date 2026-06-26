@@ -56,7 +56,8 @@ class VkRebornImeService : InputMethodService(), VkKeyboardView.Listener {
             KeyAction.INPUT -> {
                 if (keyboardView.mode == KeyboardMode.HANGUL && RuleTable.hangulRules.containsKey(key.id)) {
                     val output = engine.press(key.id)
-                    composer.replaceLastJamoOrAppend(output, engine.wasReplacement)
+                    val replace = engine.wasReplacement && composer.canReplaceLastJamoOnRepeat()
+                    composer.replaceLastJamoOrAppend(output, replace)
                     ic.setComposingText(composer.text(), 1)
                 } else {
                     commitComposer(); ic.commitText(key.label, 1)

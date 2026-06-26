@@ -44,6 +44,32 @@ class HangulComposer {
         tryCombineLastVowels()
     }
 
+    /**
+     * 같은 키 반복 입력 시 직전 자모를 대체할 수 있는지 판단한다.
+     *
+     * 반츄 규칙:
+     * - 초성 단독 상태: 1 + 1 => ㄲ 이므로 대체
+     * - 모음 단독/중성 입력 중: 3 + 3 => ㅓ 이므로 대체
+     * - 초성+중성+종성 상태에서 같은 자음 재입력: 안 + ㄴ => 안ㄴ 이므로 append
+     *   예: 0+3+2+2+33+한+0 => 안녕
+     */
+    fun canReplaceLastJamoOnRepeat(): Boolean {
+        if (buffer.isEmpty()) return false
+        val last = buffer.last()
+        if (isVowel(last)) return true
+        if (!isConsonant(last)) return true
+
+        // C + V + C 상태에서 마지막 C는 종성으로 간주하므로 같은 키 반복이어도 대체하지 않는다.
+        if (buffer.size >= 3) {
+            val a = buffer[buffer.lastIndex - 2]
+            val b = buffer[buffer.lastIndex - 1]
+            if (isConsonant(a) && isVowel(b) && isConsonant(last)) {
+                return false
+            }
+        }
+        return true
+    }
+
     fun backspace(): Boolean {
         if (buffer.isEmpty()) return false
         val last = buffer.last()
