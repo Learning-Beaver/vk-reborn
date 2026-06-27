@@ -1,4 +1,4 @@
-# VK Reborn v0.7.3
+# VK Reborn v0.9
 
 반츄 키보드 복원 프로젝트 v0.7.3입니다.
 
@@ -47,3 +47,41 @@ Fix repeated final consonant overflow.
 - `0+3+8+8+8` now outputs `았ㅅ` instead of `았ㅆ`.
 - `1+33+9+8+8` still outputs `겠`.
 - `1+33+9+8+8+8` outputs `겠ㅅ`.
+
+
+## v0.8
+
+English keyboard restoration.
+
+- Original-style QWERTY layout
+- Shift OFF / ONCE / LOCK state machine
+- Shift 3rd press returns to lowercase
+- Caps Lock blue dot indicator
+- English long-press sub labels
+- Common DEL / SPACE / ENTER behavior retained
+
+
+## v0.9
+
+Symbol keyboard restoration.
+
+- Added SYMBOL2 mode.
+- ALT toggles between SYM Page 1 and SYM Page 2.
+- Restored original second symbol page layout.
+- Common DEL / SPACE / ENTER behavior retained.
+
+
+## v0.9.2
+- Performance patch
+- Cached key rectangles
+- Partial key invalidation
+- Batch edit for composing text
+- Safer Handler cleanup
+
+
+## v0.9.2 Turbo Patch
+- ACTION_DOWN 즉시 입력 처리
+- 롱프레스와 일반 입력 분리
+- 롱프레스 시 직전 일반 입력을 보조문자로 치환
+- 롱프레스 임계값 280ms로 단축
+- 빠른 타자 입력 누락 완화

@@ -11,8 +11,8 @@ android {
         applicationId 'com.vkreborn.ime'
         minSdk 23
         targetSdk 35
-        versionCode 6
-        versionName '0.4.2-alpha'
+        versionCode 9
+        versionName '0.9-alpha'
     }
 
     // Use Android's standard Java 8 bytecode target for max compatibility.
