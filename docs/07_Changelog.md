@@ -30,3 +30,9 @@
 - Test: `안녕` input path fixed.
 - Test: `응이` input path fixed.
 - Add: `canReplaceLastJamoOnRepeat()` composer guard.
+
+
+## v0.7.3
+- ENTER key now respects EditorInfo IME actions.
+- Chrome/search fields execute SEARCH instead of inserting whitespace/newline.
+- Text editors still receive KEYCODE_ENTER fallback for newline.

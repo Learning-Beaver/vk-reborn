@@ -53,18 +53,21 @@ class HangulComposer {
      * - 초성+중성+종성 상태에서 같은 자음 재입력: 안 + ㄴ => 안ㄴ 이므로 append
      *   예: 0+3+2+2+33+한+0 => 안녕
      */
-    fun canReplaceLastJamoOnRepeat(): Boolean {
+    fun canReplaceLastJamoOnRepeat(nextChar: Char): Boolean {
         if (buffer.isEmpty()) return false
         val last = buffer.last()
         if (isVowel(last)) return true
         if (!isConsonant(last)) return true
 
-        // C + V + C 상태에서 마지막 C는 종성으로 간주하므로 같은 키 반복이어도 대체하지 않는다.
+        // C + V + C 상태에서 마지막 C는 종성으로 간주한다.
+        // 다만 같은 키 반복 결과가 실제 종성으로 가능한 쌍받침이면 대체한다.
+        // 예: 게 + ㅅ + ㅅ => 겠, 가 + ㄱ + ㄱ => 갂
+        // 반면 안 + ㄴ => 안ㄴ 처럼 다음 음절 초성으로 넘어가야 한다.
         if (buffer.size >= 3) {
             val a = buffer[buffer.lastIndex - 2]
             val b = buffer[buffer.lastIndex - 1]
             if (isConsonant(a) && isVowel(b) && isConsonant(last)) {
-                return false
+                return nextChar != last && canBeFinal(nextChar)
             }
         }
         return true

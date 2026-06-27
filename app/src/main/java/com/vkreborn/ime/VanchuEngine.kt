@@ -56,6 +56,20 @@ class VanchuEngine {
         else (rule.shiftNormal ?: rule.normal).first()
     }
 
+    /**
+     * 같은 키 반복이 더 이상 직전 자모를 대체할 수 없을 때,
+     * 현재 키를 새 글자의 첫 입력으로 다시 시작한다.
+     * 예: 았 + 8 => 았ㅅ, 이후 8을 한 번 더 누르면 았ㅆ 이 될 수 있어야 한다.
+     */
+    fun restartCurrentKeyAsNew(keyId: String) {
+        lastKeyId = keyId
+        repeatCount = 1
+        toggled = false
+        wasReplacement = false
+    }
+
+    fun normalChar(keyId: String): Char = RuleTable.hangulRules.getValue(keyId).normal.first()
+
     fun resetAfterEdit() {
         lastKeyId = null
         repeatCount = 0

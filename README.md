@@ -1,6 +1,6 @@
-# VK Reborn v0.7
+# VK Reborn v0.7.3
 
-반츄 키보드 복원 프로젝트 v0.7입니다.
+반츄 키보드 복원 프로젝트 v0.7.3입니다.
 
 ## 반영 내용
 - `한` 키 토글 유지
@@ -24,7 +24,7 @@
 - DEL 길게 누르면 연속 삭제
 
 
-## v0.7 Notes
+## v0.7.3 Notes
 
 - 종성 뒤 같은 키 반복 입력 처리 수정
   - `0+3+2+2+33+한+0` => `안녕`
@@ -32,3 +32,18 @@
 - 같은 키 반복이 항상 직전 자모 대체로 처리되던 문제 수정
 - `HangulComposer.canReplaceLastJamoOnRepeat()` 추가
 
+
+
+## v0.7.3
+- Fix: `겠` input rule.
+- `1+33+9+8+8` now composes `겠` instead of splitting the repeated `ㅅ`.
+- Keeps `안녕` rule: `0+3+2+2+33+한+0` remains `안녕`.
+
+
+## v0.7.3
+
+Fix repeated final consonant overflow.
+
+- `0+3+8+8+8` now outputs `았ㅅ` instead of `았ㅆ`.
+- `1+33+9+8+8` still outputs `겠`.
+- `1+33+9+8+8+8` outputs `겠ㅅ`.
