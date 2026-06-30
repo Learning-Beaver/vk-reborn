@@ -272,16 +272,30 @@ class VkKeyboardView @JvmOverloads constructor(
 
 
     private fun startDeleteRepeat(key: VkKey) {
+        // v0.9.10: DEL 가속 삭제
+        // ACTION_DOWN에서 이미 1회 삭제되므로, 롱프레스 확정 이후부터 반복 삭제한다.
+        // 누르고 있는 시간이 길어질수록 삭제 간격을 줄여 원본 키보드처럼 "꾸우우욱" 누르면
+        // 빠르게 지워지는 느낌을 만든다.
+        val startedAt = android.os.SystemClock.uptimeMillis()
+
         val runnable = object : Runnable {
             override fun run() {
-                if (downKey == key) {
-                    listener?.onLongKey(key)
-                    handler.postDelayed(this, 70)
+                if (downKey != key) return
+
+                listener?.onLongKey(key)
+
+                val elapsed = android.os.SystemClock.uptimeMillis() - startedAt
+                val nextDelay = when {
+                    elapsed < 600L -> 110L
+                    elapsed < 1400L -> 65L
+                    elapsed < 2400L -> 38L
+                    else -> 24L
                 }
+                handler.postDelayed(this, nextDelay)
             }
         }
         deleteRepeatRunnable = runnable
-        handler.post(runnable)
+        handler.postDelayed(runnable, 90L)
     }
 
     private fun stopRepeats() {

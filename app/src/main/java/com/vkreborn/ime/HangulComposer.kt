@@ -82,6 +82,29 @@ class HangulComposer {
         return true
     }
 
+    /**
+     * v0.9.7 Hotfix: "호빵" 입력 규칙.
+     *
+     * 반츄 원본 동작:
+     *   호 + ㅂ = 홉
+     *   홉 + ㅂ = 호ㅃ  (받침 ㅂ을 다음 초성 ㅃ으로 이동)
+     *   호ㅃ + ㅏ = 호빠
+     *   호빠 + ㅇ = 호빵
+     *
+     * 현재는 해당 케이스만 보수적으로 처리한다.
+     */
+    fun promoteFinalBieupToNextSsangBieup(): Boolean {
+        if (buffer.size < 3) return false
+        val last = buffer[buffer.lastIndex]
+        val medial = buffer[buffer.lastIndex - 1]
+        val initial = buffer[buffer.lastIndex - 2]
+        if (isConsonant(initial) && isVowel(medial) && last == 'ㅂ') {
+            buffer[buffer.lastIndex] = 'ㅃ'
+            return true
+        }
+        return false
+    }
+
     fun backspace(): Boolean {
         if (buffer.isEmpty()) return false
         val last = buffer.last()

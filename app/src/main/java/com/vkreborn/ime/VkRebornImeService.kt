@@ -16,6 +16,7 @@ class VkRebornImeService : InputMethodService(), VkKeyboardView.Listener {
     private val composer = HangulComposer()
     private val engine = VanchuEngine()
     private var englishShiftState = EnglishShiftState.OFF
+    private var ignoreNextSelectionUpdate = false
 
     override fun onCreateInputView(): View {
         keyboardView = VkKeyboardView(this)
@@ -31,6 +32,36 @@ class VkRebornImeService : InputMethodService(), VkKeyboardView.Listener {
         if (::keyboardView.isInitialized) {
             keyboardView.mode = KeyboardMode.HANGUL
             keyboardView.englishShiftState = englishShiftState
+        }
+    }
+
+
+    override fun onUpdateSelection(
+        oldSelStart: Int,
+        oldSelEnd: Int,
+        newSelStart: Int,
+        newSelEnd: Int,
+        candidatesStart: Int,
+        candidatesEnd: Int
+    ) {
+        super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
+
+        // v0.9.9 Compose Recovery:
+        // setComposingText() 직후 Android가 selection update를 보내는데, 이를 사용자 커서 이동으로
+        // 오인하면 composer가 즉시 초기화되어 1+3이 "ㄱㅏ"로 분리된다.
+        // 내부 조합 갱신으로 발생한 selection update는 1회 무시하고, 그 외의 실제 커서 이동만
+        // composer를 종료한다.
+        if (ignoreNextSelectionUpdate) {
+            ignoreNextSelectionUpdate = false
+            return
+        }
+
+        if (newSelStart != oldSelStart || newSelEnd != oldSelEnd) {
+            if (composer.text().isNotEmpty()) {
+                currentInputConnection?.finishComposingText()
+                composer.clear()
+                engine.reset()
+            }
         }
     }
 
@@ -52,7 +83,7 @@ class VkRebornImeService : InputMethodService(), VkKeyboardView.Listener {
                         engine.resetAfterEdit()
                     }
                     val text = composer.text()
-                    if (text.isEmpty()) ic.finishComposingText() else ic.setComposingText(text, 1)
+                    if (text.isEmpty()) ic.finishComposingText() else setComposingTextSafe(text)
                 } finally {
                     ic.endBatchEdit()
                 }
@@ -71,17 +102,27 @@ class VkRebornImeService : InputMethodService(), VkKeyboardView.Listener {
                     val rawOutput = engine.press(key.id)
                     val replace = engine.wasReplacement && composer.canReplaceLastJamoOnRepeat(rawOutput)
                     val output = if (engine.wasReplacement && !replace) {
-                        // 반복 입력이 직전 자모 대체가 아니라 새 음절/새 자모 시작이어야 하는 경우.
-                        // 예: 0+3+8+8+8 => 았ㅅ, 세 번째 8은 ㅆ이 아니라 새 ㅅ이다.
-                        engine.restartCurrentKeyAsNew(key.id)
-                        engine.normalChar(key.id)
+                        // v0.9.7 Hotfix: 호빵
+                        // 호 + ㅂ + ㅂ + ㅏ + ㅇ => 호빵
+                        // 종성 ㅂ 상태에서 같은 7키를 한 번 더 누르면 받침 ㅂ을 다음 초성 ㅃ으로 이동한다.
+                        if (key.id == "7" && rawOutput == 'ㅃ' && composer.promoteFinalBieupToNextSsangBieup()) {
+                            engine.restartCurrentKeyAsNew(key.id)
+                            '\u0000'
+                        } else {
+                            // 반복 입력이 직전 자모 대체가 아니라 새 음절/새 자모 시작이어야 하는 경우.
+                            // 예: 0+3+8+8+8 => 았ㅅ, 세 번째 8은 ㅆ이 아니라 새 ㅅ이다.
+                            engine.restartCurrentKeyAsNew(key.id)
+                            engine.normalChar(key.id)
+                        }
                     } else {
                         rawOutput
                     }
                     ic.beginBatchEdit()
                     try {
-                        composer.replaceLastJamoOrAppend(output, replace)
-                        ic.setComposingText(composer.text(), 1)
+                        if (output != '\u0000') {
+                            composer.replaceLastJamoOrAppend(output, replace)
+                        }
+                        setComposingTextSafe(composer.text())
                     } finally {
                         ic.endBatchEdit()
                     }
@@ -111,20 +152,25 @@ class VkRebornImeService : InputMethodService(), VkKeyboardView.Listener {
             return
         }
 
-        val rule = RuleTable.hangulRules[key.id]
-        val text = rule?.longPress ?: key.subLabel ?: return
+        // v0.9.8: 롱프레스 문자는 현재 키보드 모드 기준으로 결정한다.
+        // 숫자 키보드에서는 1 길게 -> !, 2 길게 -> @ 처럼 key.subLabel을 사용해야 한다.
+        // 이전 버전은 숫자키 id가 한글 RuleTable과 겹쳐 1 길게 -> 1로 치환되어
+        // 겉으로는 아무 동작도 하지 않는 것처럼 보였다.
+        val hangulRule = if (keyboardView.mode == KeyboardMode.HANGUL) RuleTable.hangulRules[key.id] else null
+        val text = hangulRule?.longPress ?: key.subLabel ?: return
 
         ic.beginBatchEdit()
         try {
-            // v0.9.2 Turbo: 일반 입력은 ACTION_DOWN에서 이미 들어갔다.
-            // 롱프레스가 확정되면 직전 일반 입력을 제거하고 보조문자/숫자로 치환한다.
-            if (keyboardView.mode == KeyboardMode.HANGUL && rule != null) {
+            // 일반 입력은 ACTION_DOWN에서 이미 들어갔다.
+            // 롱프레스 확정 시 직전 일반 입력을 제거하고 보조문자로 치환한다.
+            if (keyboardView.mode == KeyboardMode.HANGUL && hangulRule != null) {
                 if (composer.backspace()) {
                     engine.resetAfterEdit()
                     val composing = composer.text()
-                    if (composing.isEmpty()) ic.finishComposingText() else ic.setComposingText(composing, 1)
+                    if (composing.isEmpty()) ic.finishComposingText() else setComposingTextSafe(composing)
                 }
             } else {
+                // 영문/숫자/SYM은 ACTION_DOWN에서 이미 commit된 글자를 현재 커서 기준으로 1글자 삭제 후 치환한다.
                 commitComposer()
                 ic.deleteSurroundingText(1, 0)
             }
@@ -151,7 +197,7 @@ class VkRebornImeService : InputMethodService(), VkKeyboardView.Listener {
         ic.beginBatchEdit()
         try {
             composer.replaceLastJamoOrAppend(toggled, true)
-            ic.setComposingText(composer.text(), 1)
+            setComposingTextSafe(composer.text())
         } finally {
             ic.endBatchEdit()
         }
@@ -187,6 +233,13 @@ class VkRebornImeService : InputMethodService(), VkKeyboardView.Listener {
         }
         keyboardView.mode = mode
         keyboardView.englishShiftState = englishShiftState
+    }
+
+
+    private fun setComposingTextSafe(text: String) {
+        val ic = currentInputConnection ?: return
+        ignoreNextSelectionUpdate = true
+        ic.setComposingText(text, 1)
     }
 
     private fun commitComposer() {
