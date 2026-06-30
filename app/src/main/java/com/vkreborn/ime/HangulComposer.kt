@@ -1,7 +1,7 @@
 package com.vkreborn.ime
 
 /**
- * VK Reborn v0.6 Hangul composer.
+ * VK Reborn v0.9.6 Hangul composer.
  * - 자모 버퍼 기반 조합
  * - 복합모음 결합: ㅗ+ㅏ=ㅘ, ㅏ+ㅣ=ㅐ 등
  * - DEL: 종성/중성/초성 순서, 복합중성은 원본 방향으로 1단계 축소
@@ -21,8 +21,17 @@ class HangulComposer {
         'ㅑ' to mapOf('ㅣ' to 'ㅒ'),
         'ㅓ' to mapOf('ㅣ' to 'ㅔ'),
         'ㅕ' to mapOf('ㅣ' to 'ㅖ'),
-        'ㅗ' to mapOf('ㅏ' to 'ㅘ', 'ㅐ' to 'ㅙ', 'ㅣ' to 'ㅚ'),
-        'ㅜ' to mapOf('ㅓ' to 'ㅝ', 'ㅔ' to 'ㅞ', 'ㅣ' to 'ㅟ'),
+        // 반츄 복합모음 규칙
+        // 6+3=ㅘ, 6+3+9=ㅙ, 6+9=ㅚ
+        'ㅗ' to mapOf('ㅏ' to 'ㅘ', 'ㅣ' to 'ㅚ'),
+        'ㅘ' to mapOf('ㅣ' to 'ㅙ'),
+
+        // 66+3=ㅝ, 66+3+9=ㅞ, 66+9=ㅟ
+        // 반츄에서는 66+3이 ㅜ+ㅏ로 입력되므로 ㅜ+ㅏ=ㅝ를 지원해야 한다.
+        'ㅜ' to mapOf('ㅏ' to 'ㅝ', 'ㅣ' to 'ㅟ'),
+        'ㅝ' to mapOf('ㅣ' to 'ㅞ'),
+
+        // 999=ㅢ
         'ㅡ' to mapOf('ㅣ' to 'ㅢ')
     )
 

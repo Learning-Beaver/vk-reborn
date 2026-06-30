@@ -71,7 +71,7 @@ Symbol keyboard restoration.
 - Common DEL / SPACE / ENTER behavior retained.
 
 
-## v0.9.2
+## v0.9.6
 - Performance patch
 - Cached key rectangles
 - Partial key invalidation
@@ -79,9 +79,39 @@ Symbol keyboard restoration.
 - Safer Handler cleanup
 
 
-## v0.9.2 Turbo Patch
+## v0.9.6 Turbo Patch
 - ACTION_DOWN 즉시 입력 처리
 - 롱프레스와 일반 입력 분리
 - 롱프레스 시 직전 일반 입력을 보조문자로 치환
 - 롱프레스 임계값 280ms로 단축
 - 빠른 타자 입력 누락 완화
+
+
+## v0.9.6 UI Theme Patch
+- 원본 반츄 UI에 맞춰 키보드 높이, 버튼 간격, 테두리, 그림자, 글자 크기를 조정했습니다.
+- Space/DEL 키를 텍스트 중심에서 원본형 아이콘 기반 렌더링으로 변경했습니다.
+
+
+## v0.9.6 UI Height Restore
+- Restored keyboard total height to pre-v0.9.3 size.
+- Kept v0.9.3 key design/theme.
+- Added top/bottom padding for original Vanchu-like vertical balance.
+- Fine-tuned label and hint vertical positions.
+
+
+## v0.9.6
+
+- Tap and long-press handling separated.
+- Fixed false long-press during fast repeated taps.
+- Regression: `0+3+2+2+33+한+0 -> 안녕`.
+
+
+## v0.9.6 - Composite Vowel Patch
+
+- `0+66+3 -> 워`
+- `0+66+3+9 -> 웨`
+- `0+66+9 -> 위`
+- `1+6+3 -> 과`
+- `1+6+3+9 -> 괘`
+- `1+6+9 -> 괴`
+- Vowel composition table updated for `ㅘ/ㅙ/ㅚ/ㅝ/ㅞ/ㅟ/ㅢ`.
